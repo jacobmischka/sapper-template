@@ -1,7 +1,4 @@
 const config = require('sapper/webpack/config.js');
-const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	entry: config.server.entry(),
@@ -13,18 +10,50 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.html$/,
+				test: /\.js$/,
 				exclude: /node_modules/,
 				use: {
-					loader: 'svelte-loader',
+					loader: 'babel-loader',
 					options: {
-						css: false,
-						cascade: false,
-						store: true,
-						generate: 'ssr'
+						forceEnv: 'server'
 					}
 				}
+			},
+			{
+				test: /\.html$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							forceEnv: 'server'
+						}
+					},
+					{
+						loader: 'svelte-loader',
+						options: {
+							css: false,
+							cascade: false,
+							store: true,
+							generate: 'ssr'
+						}
+					}
+				]
+			},
+			{
+				test: /\.css$/,
+				use: 'ignore-loader'
+			},
+			{
+				test: /\.js$/,
+				include: [
+					/bootstrap/
+				],
+				use: 'ignore-loader'
 			}
 		]
+	},
+	externals: {
+		knex: 'commonjs knex'
 	}
 };

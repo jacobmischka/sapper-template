@@ -3,6 +3,8 @@ const config = require('sapper/webpack/config.js');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
+const cssnext = require('postcss-cssnext');
+
 const isDev = config.dev;
 
 module.exports = {
@@ -14,30 +16,78 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.html$/,
+				test: /\.js$/,
 				exclude: /node_modules/,
 				use: {
-					loader: 'svelte-loader',
+					loader: 'babel-loader',
 					options: {
-						hydratable: true,
-						emitCss: !isDev,
-						cascade: false,
-						store: true
+						forceEnv: 'client'
 					}
 				}
+			},
+			{
+				test: /\.html$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							forceEnv: 'client'
+						}
+					},
+					{
+						loader: 'svelte-loader',
+						options: {
+							hydratable: true,
+							emitCss: !isDev,
+							cascade: false,
+							store: true
+						}
+					}
+				]
 			},
 			isDev && {
 				test: /\.css$/,
 				use: [
 					{ loader: 'style-loader' },
-					{ loader: 'css-loader' }
+					{
+						loader: 'css-loader',
+						options: {
+							minimize: false,
+							sourceMap: true
+						}
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: [
+								cssnext()
+							]
+						}
+					}
 				]
 			},
 			!isDev && {
 				test: /\.css$/,
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
-					use: [{ loader: 'css-loader', options: { sourceMap:isDev } }]
+					use: [
+						{
+							loader: 'css-loader',
+							options: {
+								minimize: true,
+								sourceMap: false
+							}
+						},
+						{
+							loader: 'postcss-loader',
+							options: {
+								plugins: [
+									cssnext()
+								]
+							}
+						}
+					]
 				})
 			}
 		].filter(Boolean)
