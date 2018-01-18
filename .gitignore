@@ -1,6 +1,5 @@
-.DS_Store
-node_modules
-.sapper
-yarn.lock
-cypress/screenshots
+.DS_Store/
+node_modules/
+.sapper/
+dist/
 templates/.*
