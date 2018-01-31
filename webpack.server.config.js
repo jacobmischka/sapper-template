@@ -5,7 +5,8 @@ module.exports = {
 	output: config.server.output(),
 	target: 'node',
 	resolve: {
-		extensions: ['.js', '.html']
+		extensions: ['.js', '.html'],
+		mainFields: ['svelte', 'module', 'main']
 	},
 	module: {
 		rules: [
@@ -21,7 +22,6 @@ module.exports = {
 			},
 			{
 				test: /\.html$/,
-				exclude: /node_modules/,
 				use: [
 					{
 						loader: 'babel-loader',

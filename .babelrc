@@ -5,7 +5,8 @@
 	"plugins": [
 		["module-resolver", {
 			"alias": {
-				"@": "./src"
+				"@": "./src",
+				"@assets": "./assets"
 			}
 		}],
 		"@babel/plugin-syntax-dynamic-import"

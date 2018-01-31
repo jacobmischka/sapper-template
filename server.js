@@ -2,7 +2,7 @@ const fs = require('fs');
 const app = require('express')();
 const compression = require('compression');
 const sapper = require('sapper');
-const static = require('serve-static');
+const serveStatic = require('serve-static');
 
 const { PORT = 3000 } = process.env;
 
@@ -15,7 +15,7 @@ global.fetch = (url, opts) => {
 
 app.use(compression({ threshold: 0 }));
 
-app.use(static('assets'));
+app.use(serveStatic('assets'));
 
 app.use(sapper());
 

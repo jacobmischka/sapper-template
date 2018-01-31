@@ -11,7 +11,8 @@ module.exports = {
 	entry: config.client.entry(),
 	output: config.client.output(),
 	resolve: {
-		extensions: ['.js', '.html']
+		extensions: ['.js', '.html'],
+		mainFields: ['svelte', 'browser', 'module', 'main']
 	},
 	module: {
 		rules: [
@@ -27,7 +28,6 @@ module.exports = {
 			},
 			{
 				test: /\.html$/,
-				exclude: /node_modules/,
 				use: [
 					{
 						loader: 'babel-loader',
@@ -101,7 +101,7 @@ module.exports = {
 	].concat(isDev ? [
 		new webpack.HotModuleReplacementPlugin()
 	] : [
-		new ExtractTextPlugin('main.css'),
+		new ExtractTextPlugin('../../assets/main.css'),
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		new UglifyJSPlugin()
 	]).filter(Boolean),
