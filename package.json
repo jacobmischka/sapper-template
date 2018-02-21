@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "sapper dev",
     "watch": "sapper dev",
-    "build": "sapper build",
-    "export": "sapper export",
+    "build": "NODE_ENV=production sapper build",
+    "export": "NODE_ENV=production sapper export",
     "start": "NODE_ENV=production node server.js",
     "rm": "rm -rf .sapper/ && rm -f assets/main.css && rm -f templates/.main.rendered.js"
   },
