@@ -55,5 +55,9 @@ module.exports = {
 	},
 	externals: {
 		knex: 'commonjs knex'
+	},
+	mode: process.env.NODE_ENV,
+	performance: {
+		hints: false // it doesn't matter if server.js is large
 	}
 };

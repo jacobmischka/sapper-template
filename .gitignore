@@ -2,6 +2,7 @@
 node_modules/
 .sapper/
 dist/
+export/
 templates/.*
 app/manifest
 assets/main.css

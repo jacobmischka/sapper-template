@@ -1,11 +1,11 @@
 const webpack = require('webpack');
 const config = require('sapper/webpack/config.js');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const cssnext = require('postcss-cssnext');
 
-const isDev = config.dev;
+const mode = process.env.NODE_ENV;
+const isDev = mode === 'development';
 
 module.exports = {
 	entry: config.client.entry(),
@@ -89,21 +89,31 @@ module.exports = {
 						}
 					]
 				})
+			},
+			{
+				test: /\.(eot|svg|ttf|woff|woff2)$/,
+				include: /node_modules/,
+				use: {
+					loader: 'file-loader',
+					options: {
+						name: 'assets/[name].[ext]'
+					}
+				}
 			}
 		].filter(Boolean)
 	},
+	mode,
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({
-			minChunks: 2,
-			async: false,
-			children: true
-		})
-	].concat(isDev ? [
-		new webpack.HotModuleReplacementPlugin()
-	] : [
-		new ExtractTextPlugin('../../assets/main.css'),
-		new webpack.optimize.ModuleConcatenationPlugin(),
-		new UglifyJSPlugin()
-	]).filter(Boolean),
+		isDev && new webpack.HotModuleReplacementPlugin(),
+		new ExtractTextPlugin({
+			filename: '[name].css',
+			allChunks: true,
+			disable: isDev
+		}),
+		new webpack.DefinePlugin({
+			'process.browser': true,
+			'process.env.NODE_ENV': JSON.stringify(mode)
+		}),
+	].filter(Boolean),
 	devtool: isDev && 'inline-source-map'
 };
