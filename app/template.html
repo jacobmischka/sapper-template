@@ -5,6 +5,8 @@
 	<meta name="viewport" content="width=device-width">
 	<meta name="theme-color" content="#aa1e1e">
 
+	%sapper.base%
+
 	<link rel="manifest" href="/manifest.json">
 	<link rel="icon" type="image/png" href="/favicon.png">
 
@@ -26,7 +28,7 @@
 <body>
 	<!-- The application will be rendered inside this element,
 	     because `templates/main.js` references it -->
-	<div id='sapper'>%sapper.html%</div>
+	<div id="sapper">%sapper.html%</div>
 
 	<!-- Sapper creates a <script> tag containing `templates/main.js`
 	     and anything else it needs to hydrate the app and
